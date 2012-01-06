@@ -24,6 +24,21 @@ gem 'delayed_job'
 
 After delayed_job is installed, you will need to setup the backend.
 
+If you're upgrading an existing app from 2.1.4 to 2.1.5, you will need
+to add an index to the delayed_jobs table.
+
+<pre>
+class DelayedJobNewIndex < ActiveRecord::Migration
+  def self.up
+    add_index :delayed_jobs, :run_at
+  end
+
+  def self.down
+    remove_index :delayed_jobs, :column => :run_at
+  end
+end
+</pre>
+
 h3. Backends
 
 delayed_job supports multiple backends for storing the job queue. "See the wiki for other backends":http://wiki.github.com/collectiveidea/delayed_job/backends besides Active Record.
